@@ -1,5 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import {sliceContacts} from "./sliceContacts";
+import {contactsApi} from "./contactsAPI";
 // import {
 //   persistStore,
 //   persistReducer,
@@ -11,11 +12,19 @@ import {sliceContacts} from "./sliceContacts";
 //   REGISTER, } from 'redux-persist';
 // import storage from 'redux-persist/lib/storage'
 
+// export const store = configureStore({
+//   reducer: {
+//     contacts: sliceContacts.reducer,
+//   }
+// })
+
 export const store = configureStore({
   reducer: {
     contacts: sliceContacts.reducer,
-  }
-})
+    [contactsApi.reducerPath]: contactsApi.reducer,
+  },
+    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), contactsApi.middleware]
+  });
 
 // const rootReducer = combineReducers({
 //   contacts: sliceContacts.reducer,
@@ -37,6 +46,3 @@ export const store = configureStore({
 // })
 // export const persistor = persistStore(store);
 
-
-//API endpoint
-//https://622671db2dfa524018058345.mockapi.io/:endpoint
