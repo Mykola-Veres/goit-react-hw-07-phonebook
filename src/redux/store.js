@@ -1,6 +1,6 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import {sliceContacts} from "./sliceContacts";
-import {contactsApi} from "./contactsAPI";
+import { configureStore } from '@reduxjs/toolkit';
+import { sliceContacts } from "./sliceContacts";
+import { contactsApi } from "./contactsAPI";
 // import {
 //   persistStore,
 //   persistReducer,
