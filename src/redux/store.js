@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { sliceContacts } from "./sliceContacts";
 import { contactsApi } from "./contactsAPI";
+// import { setupListeners } from '@reduxjs/toolkit/query';
 // import {
 //   persistStore,
 //   persistReducer,
@@ -23,8 +24,10 @@ export const store = configureStore({
     contacts: sliceContacts.reducer,
     [contactsApi.reducerPath]: contactsApi.reducer,
   },
-    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), contactsApi.middleware]
+    middleware: getDefaultMiddleware => [...getDefaultMiddleware(), contactsApi.middleware]
   });
+
+  // setupListeners(store.dispatch);
 
 // const rootReducer = combineReducers({
 //   contacts: sliceContacts.reducer,
