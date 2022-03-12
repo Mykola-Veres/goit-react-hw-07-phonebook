@@ -4,9 +4,17 @@ import { ContactsForm, ContactsFormBtn } from './ContactForm.styled';
 // import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {addContacts, filterContacts } from "../../redux/sliceContacts";
+import { useGetContactsQuery, useDeleteContactsMutation, useCreateContactsMutation } from '../../redux/contactsAPI';
 
 export default function ContactForm () {
-  const contacts = useSelector(state => state.contacts.items);
+
+  const { data: contacts, error, isLoading, isUninitialized, isFetching, refetch, isError } = useGetContactsQuery();
+
+  const [addContact] = useCreateContactsMutation()
+
+  // const contacts = useSelector(state => state.contacts.items);
+
+
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
@@ -25,7 +33,7 @@ export default function ContactForm () {
   const handlerSubmitUser = e => {
     e.preventDefault();
     const contact = {
-      id: nanoid(),
+      // id: nanoid(),
       name,
       number,
     };
@@ -33,11 +41,12 @@ export default function ContactForm () {
     resetName();
   };
 
-  const handlerSubmitUserForm = contact => {
+  const handlerSubmitUserForm = (contact) => {
     contacts.some(contactItem =>
-        contactItem.name.toLocaleLowerCase() === contact.name.toLocaleLowerCase())
-      ? alert(`${contact.name} is already in contacts`)
-      : dispatch(addContacts(contact))
+        contactItem.name.toLocaleLowerCase() === name.toLocaleLowerCase())
+      ? alert(`${name} is already in contacts`)
+      : addContact(contact);
+      // dispatch(addContacts(contact))
     resetFilter()
   };
 
