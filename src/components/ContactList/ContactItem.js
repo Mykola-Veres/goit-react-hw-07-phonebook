@@ -1,28 +1,26 @@
 import { ContactsListBtn, ContactsListItem } from './ContactList.styled';
-import { useSelector, useDispatch } from 'react-redux';
-import { removeContacts } from "../../redux/sliceContacts";
 import { useGetContactsQuery, useDeleteContactsMutation } from '../../redux/contactsAPI';
+import PropTypes from 'prop-types';
 
+const ContactItem = ({filter}) => {
+  const { data: contacts, isUninitialized, isFetching, refetch, isError
+  } = useGetContactsQuery();
 
-const ContactItem = () => {
-  const { data: contacts, error, isLoading, isUninitialized, isFetching, refetch, isError } = useGetContactsQuery()
+  function filterVisibleContacts () {
+    return contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))}
 
-    // const dispatch = useDispatch()
-    // const contacts = useSelector(state => state.contacts.items);
-    // const filter = useSelector(state => state.contacts.filter);
+  const [deleteContact, {isLoading: isDeleting}] = useDeleteContactsMutation();
 
-  // const filterVisibleContacts = () => contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
-
-  // const handlerDeleteContact = name => {dispatch(removeContacts(contacts.filter(contact => contact.name !== name)))};
-  const [deleteContact] = useDeleteContactsMutation()
+  const showContacts = contacts && !isFetching && !isError;
 
     return (<>
-    {contacts && contacts.map(contact => (
+    <button onClick={refetch} disabled={isUninitialized}> REFETCH </button>
+    {showContacts && filterVisibleContacts().map(contact => (
     <ContactsListItem key={contact.id}>
       {contact.name}: {contact.phone}
-      <ContactsListBtn
+      <ContactsListBtn disabled={isUninitialized}
       onClick={() => deleteContact(contact.id)}
-      >Delete
+      >{isDeleting ? "deleting..." : "Delete"}
       </ContactsListBtn>
     </ContactsListItem>
   ))}
@@ -30,7 +28,6 @@ const ContactItem = () => {
 
 export default ContactItem;
 
-// ContactItem.propTypes = {
-//   contactsItem: PropTypes.array.isRequired,
-//   onDeleteContact: PropTypes.func.isRequired,
-// };
+ContactItem.propTypes = {
+  filter: PropTypes.string.isRequired,
+};

@@ -1,15 +1,14 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import ContactItem from './ContactItem';
 
-const ContactList = () => (
+const ContactList = ({filter}) => (
   <ol>
-    <ContactItem />
+    <ContactItem filter={filter} />
   </ol>
 );
 
 export default ContactList;
 
-// ContactList.propTypes = {
-//   contacts: PropTypes.array.isRequired,
-//   onDeleteContact: PropTypes.func.isRequired,
-// };
+ContactItem.propTypes = {
+  filter: PropTypes.string.isRequired,
+};

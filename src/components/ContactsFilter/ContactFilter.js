@@ -1,18 +1,13 @@
-// import PropTypes from 'prop-types';
-import { filterContacts } from "../../redux/sliceContacts";
-import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Filter = () => {
-  const dispatchFilter = useDispatch();
-  const filter = useSelector(state => state.contacts.filter);
-  const handlerFilterName = e => {dispatchFilter(filterContacts(e.target.value))};
+const Filter = ({ value, onChange }) => {
   return  (<label>
     Find contacts by name
     <input
       type="text"
       name="filter"
-      value={filter}
-      onChange={handlerFilterName}
+      value={value}
+      onChange={onChange}
       pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
       title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
     />
@@ -21,7 +16,7 @@ const Filter = () => {
 
 export default Filter;
 
-// Filter.propTypes = {
-//   value: PropTypes.string.isRequired,
-//   onChange: PropTypes.func.isRequired,
-// };
+Filter.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
